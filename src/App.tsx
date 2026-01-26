@@ -7,7 +7,8 @@ import { CartProvider } from "@/contexts/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
-import Index from "./pages/Index";
+import ScrollToTop from "@/components/ScrollToTop"; // 👈 IMPORT THIS
+import Index from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
@@ -21,6 +22,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          {/* 👇 ADD THIS COMPONENT HERE */}
+          <ScrollToTop />
+          
           <div className="min-h-screen flex flex-col">
             <Header />
             <div className="flex-1">

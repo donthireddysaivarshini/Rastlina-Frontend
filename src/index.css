@@ -6,95 +6,28 @@
 
 @layer base {
   :root {
-    /* RASILINA Design System - Warm Earthy Aesthetics */
+    /* RASILINA Design System */
     
-    /* Primary Brand Colors */
-    --primary: 71 100% 25%;           /* Deep Sage #667D00 */
-    --primary-foreground: 45 30% 96%;
+    /* Variables hold just the HSL values */
+    --primary: 71 100% 25%;           /* #677d00 (Sage Green) */
+    --primary-foreground: 0 0% 100%;
     
-    /* Accent Colors */
-    --accent-earth: 33 43% 31%;       /* Warm Earth #73592F */
-    --accent-earth-foreground: 45 30% 96%;
-    --accent-gold: 35 40% 60%;        /* Soft Gold #BFA275 */
-    --accent-gold-foreground: 33 43% 15%;
+    --accent-earth: 33 43% 31%;       /* #73592f (Warm Earth) */
+    --accent-earth-foreground: 0 0% 100%;
     
-    /* Neutrals */
-    --background: 40 20% 96%;         /* Warm off-white #F5F3EF */
-    --foreground: 0 0% 18%;           /* Warm black #2D2D2D */
+    --accent-gold: 41 38% 60%;        /* #bFA275 (Soft Gold) */
+    --accent-gold-foreground: 0 0% 100%;
+    
+    --background: 40 20% 96%;
+    --foreground: 71 100% 15%;
     
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 18%;
+    --card-foreground: 71 100% 15%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 18%;
-    
-    --secondary: 35 25% 90%;
-    --secondary-foreground: 0 0% 18%;
-    
-    --muted: 35 15% 92%;
-    --muted-foreground: 0 0% 40%;
-    
-    --accent: 35 40% 60%;
-    --accent-foreground: 33 43% 15%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
+    --border: 41 38% 85%;
+    --input: 41 38% 85%;
     --ring: 71 100% 25%;
-    
-    --radius: 0.75rem;
-    
-    /* Extended palette */
-    --terracotta: 15 55% 55%;
-    --sage-light: 71 40% 85%;
-    --cream: 40 30% 95%;
-    
-    /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(33 43% 31% / 0.1);
-    --shadow-medium: 0 8px 30px -8px hsl(33 43% 31% / 0.15);
-    --shadow-hover: 0 12px 40px -12px hsl(33 43% 31% / 0.2);
-    
-    /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 71 100% 25%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 35 25% 95%;
-    --sidebar-accent-foreground: 0 0% 18%;
-    --sidebar-border: 35 20% 90%;
-    --sidebar-ring: 71 100% 25%;
-  }
-
-  .dark {
-    --background: 0 0% 10%;
-    --foreground: 45 30% 96%;
-    
-    --card: 0 0% 12%;
-    --card-foreground: 45 30% 96%;
-    
-    --popover: 0 0% 12%;
-    --popover-foreground: 45 30% 96%;
-    
-    --primary: 71 80% 45%;
-    --primary-foreground: 0 0% 10%;
-    
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 45 30% 96%;
-    
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 65%;
-    
-    --accent: 35 40% 50%;
-    --accent-foreground: 45 30% 96%;
-    
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 45 30% 96%;
-    
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 71 80% 45%;
+    --radius: 0.5rem;
   }
 }
 
@@ -102,169 +35,73 @@
   * {
     @apply border-border;
   }
-  
-  html {
-    scroll-behavior: smooth;
-  }
-  
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
   }
-  
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', Georgia, serif;
     @apply font-semibold tracking-tight;
   }
 }
 
+/* Explicit Color Utilities to fix visibility issues */
+@layer utilities {
+  .bg-primary { background-color: hsl(var(--primary)); }
+  .text-primary { color: hsl(var(--primary)); }
+  .border-primary { border-color: hsl(var(--primary)); }
+  
+  .bg-accent-earth { background-color: hsl(var(--accent-earth)); }
+  .text-accent-earth { color: hsl(var(--accent-earth)); }
+  .border-accent-earth { border-color: hsl(var(--accent-earth)); }
+  
+  .bg-accent-gold { background-color: hsl(var(--accent-gold)); }
+  .text-accent-gold { color: hsl(var(--accent-gold)); }
+  .border-accent-gold { border-color: hsl(var(--accent-gold)); }
+
+  .bg-secondary-custom { background-color: hsl(41 38% 95%); } /* Very light gold tint */
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 @layer components {
-  /* Hero section overlay */
-  .hero-overlay {
-    @apply bg-accent-earth/80 backdrop-blur-sm;
+  /* Offer Badge */
+  .badge-offer {
+    @apply text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wide;
+    background-color: hsl(var(--accent-gold));
   }
-  
-  /* Product card hover effect */
+
+  /* Discount Badge */
+  .discount-badge {
+    @apply text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wide;
+    background-color: hsl(var(--accent-earth));
+  }
+
+  /* Buttons */
+  .quick-add-btn {
+    @apply w-full text-white font-medium py-2 rounded-md transition-colors shadow-sm text-sm md:text-base;
+    background-color: hsl(var(--primary));
+  }
+  .quick-add-btn:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+
   .product-card {
-    @apply transition-all duration-300 ease-out;
+    @apply transition-all duration-300 ease-out border-0 bg-white rounded-xl;
   }
-  
   .product-card:hover {
-    @apply -translate-y-2;
-    box-shadow: var(--shadow-hover);
-  }
-  
-  /* Category card overlay */
-  .category-card-overlay {
-    @apply absolute inset-0 bg-gradient-to-t from-accent-earth/80 via-accent-earth/20 to-transparent transition-all duration-300;
-  }
-  
-  .category-card:hover .category-card-overlay {
-    @apply from-accent-earth/90 via-accent-earth/40;
-  }
-  
-  /* Section spacing */
-  .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply -translate-y-1;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
   
   /* Container */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  
-  /* Trust badge */
-  .trust-badge {
-    @apply flex items-center gap-3 text-sm text-muted-foreground;
-  }
-  
-  /* Link underline animation */
-  .link-underline {
-    @apply relative;
-  }
-  
-  .link-underline::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
-  }
-  
-  .link-underline:hover::after {
-    @apply w-full;
-  }
-  
-  /* Price styling */
-  .price-original {
-    @apply line-through text-muted-foreground text-sm;
-  }
-  
-  .price-sale {
-    @apply text-primary font-semibold;
-  }
-  
-  .discount-badge {
-    @apply bg-accent-gold text-accent-gold-foreground text-xs font-medium px-2 py-0.5 rounded-full;
-  }
-  
-  /* Care icons */
-  .care-icon {
-    @apply inline-flex items-center gap-1.5 text-xs text-muted-foreground;
-  }
-  
-  /* Rating stars */
-  .rating {
-    @apply inline-flex items-center gap-1 text-accent-gold;
-  }
-}
-
-@layer utilities {
-  /* Gradient backgrounds */
-  .bg-gradient-warm {
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--cream)) 100%);
-  }
-  
-  .bg-gradient-sage {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(71 80% 35%) 100%);
-  }
-  
-  .bg-gradient-earth {
-    background: linear-gradient(180deg, hsl(var(--accent-earth) / 0.9) 0%, hsl(var(--accent-earth)) 100%);
-  }
-  
-  /* Text gradients */
-  .text-gradient-gold {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(90deg, hsl(var(--accent-gold)) 0%, hsl(35 50% 70%) 100%);
-  }
-  
-  /* Animations */
-  .animate-fade-up {
-    animation: fadeUp 0.6s ease-out forwards;
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-  
-  .animate-scale-in {
-    animation: scaleIn 0.3s ease-out forwards;
-  }
-  
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  /* Stagger children animations */
-  .stagger-children > * {
-    @apply animate-fade-up;
-  }
-  
-  .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger-children > *:nth-child(2) { animation-delay: 100ms; }
-  .stagger-children > *:nth-child(3) { animation-delay: 200ms; }
-  .stagger-children > *:nth-child(4) { animation-delay: 300ms; }
-  .stagger-children > *:nth-child(5) { animation-delay: 400ms; }
-  .stagger-children > *:nth-child(6) { animation-delay: 500ms; }
 }

@@ -8,11 +8,23 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+
+    // ✅ ADD THIS
+    allowedHosts: [
+      "unmistaking-unsymbolic-jadiel.ngrok-free.dev",
+      ".ngrok-free.dev", // optional but recommended for dev
+    ],
+
     hmr: {
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+
+  plugins: [
+    react(),
+    mode === "development" && componentTagger(),
+  ].filter(Boolean),
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

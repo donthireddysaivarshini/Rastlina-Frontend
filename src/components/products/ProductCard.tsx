@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Star, Droplets, Leaf, Heart } from 'lucide-react';
+import { Star, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Product, formatPrice } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
@@ -16,8 +16,9 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const defaultSize = product.sizes[1] || product.sizes[0];
-    const defaultColor = product.colors[0];
+    // Safe check for sizes/colors to prevent crashes
+    const defaultSize = product.sizes?.[0] || { label: 'Standard', price: product.price };
+    const defaultColor = product.colors?.[0] || 'Standard';
     addToCart(product, defaultSize.label, defaultColor, defaultSize.price);
   };
 
@@ -26,27 +27,35 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="product-card group"
+      // PREMIUM CARD STYLE: White bg, subtle border, shadow on hover
+      className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full"
     >
-      <Link to={`/product/${product.slug}`} className="block">
+      <Link to={`/product/${product.slug}`} className="block flex-1 flex flex-col">
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden rounded-xl bg-muted mb-4">
+        <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           
-          {/* Discount Badge */}
-          {product.discount > 0 && (
-            <span className="absolute top-3 left-3 discount-badge">
-              {product.discount}% OFF
-            </span>
-          )}
+          {/* Badges */}
+          <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
+            {product.onOffer && (
+              <span className="bg-accent-gold text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wide shadow-sm">
+                Sale
+              </span>
+            )}
+            {product.discount > 0 && !product.onOffer && (
+              <span className="bg-accent-earth text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wide shadow-sm">
+                -{product.discount}%
+              </span>
+            )}
+          </div>
           
           {/* Wishlist Button */}
           <button 
-            className="absolute top-3 right-3 p-2 rounded-full bg-card/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-card"
+            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white text-primary shadow-sm"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -54,54 +63,43 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
           >
             <Heart className="h-4 w-4" />
           </button>
-
-          {/* Quick Add Button */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <Button 
-              variant="quickAdd" 
-              className="w-full"
-              onClick={handleQuickAdd}
-            >
-              Quick Add
-            </Button>
-          </div>
         </div>
 
         {/* Content */}
-        <div className="space-y-2">
-          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
-            {product.name}
-          </h3>
-          
-          {/* Rating */}
-          <div className="flex items-center gap-2">
-            <div className="rating">
-              <Star className="h-4 w-4 fill-current" />
-              <span className="text-sm font-medium">{product.rating}</span>
+        <div className="p-4 flex flex-col flex-1">
+          <div className="flex-1">
+            <h3 className="font-serif text-lg text-foreground truncate group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            
+            {/* Rating */}
+            <div className="flex items-center gap-1.5 mt-1">
+              <Star className="h-3.5 w-3.5 fill-accent-gold text-accent-gold" />
+              <span className="text-xs font-bold text-foreground">{product.rating}</span>
+              <span className="text-xs text-muted-foreground">({product.reviewCount})</span>
             </div>
-            <span className="text-sm text-muted-foreground">
-              ({product.reviewCount})
-            </span>
+
+            {/* Price Block */}
+            <div className="flex items-baseline gap-2 mt-3">
+              <span className="text-lg font-bold text-primary">
+                {formatPrice(product.price)}
+              </span>
+              {product.originalPrice > product.price && (
+                <span className="text-sm text-gray-400 line-through">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* Care Icons */}
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span className="care-icon">
-              <Leaf className="h-3.5 w-3.5 text-primary" />
-              {product.careLevel}
-            </span>
-            <span className="care-icon">
-              <Droplets className="h-3.5 w-3.5 text-blue-500" />
-              {product.waterFrequency}
-            </span>
-          </div>
-
-          {/* Price */}
-          <div className="flex items-center gap-2 pt-1">
-            <span className="price-sale text-lg">{formatPrice(product.price)}</span>
-            {product.originalPrice > product.price && (
-              <span className="price-original">{formatPrice(product.originalPrice)}</span>
-            )}
+          {/* Quick Add Button (Always Visible & Sturdy) */}
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <Button 
+              onClick={handleQuickAdd}
+              className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-none h-10 rounded-lg"
+            >
+              Add to Cart
+            </Button>
           </div>
         </div>
       </Link>

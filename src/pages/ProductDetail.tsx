@@ -3,9 +3,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Droplets, Sun, Thermometer, Ruler, PawPrint, Check, Heart, Truck, ShieldCheck, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getProductBySlug, formatPrice, products } from '@/data/products';
+import { getProductBySlug, formatPrice } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
-import { ProductCard } from '@/components/products/ProductCard';
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,8 +28,6 @@ const ProductDetail = () => {
       addToCart(product, selectedSize.label, selectedColor, selectedSize.price);
     }
   };
-
-  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
 
   return (
     <main className="bg-background">
@@ -252,16 +249,6 @@ const ProductDetail = () => {
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Related Products */}
-      <section className="container-custom py-16">
-        <h2 className="text-2xl md:text-3xl font-serif mb-8">You May Also Like</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {relatedProducts.map((p, i) => (
-            <ProductCard key={p.id} product={p} index={i} />
-          ))}
         </div>
       </section>
     </main>
