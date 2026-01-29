@@ -43,7 +43,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       return [...prev, { product, quantity: 1, selectedSize: size, selectedColor: color, price }];
     });
-    setIsOpen(true);
+    // REMOVED: setIsOpen(true); -> Now it won't auto-open
   }, []);
 
   const removeFromCart = useCallback((productId: string, size: string, color: string) => {

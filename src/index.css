@@ -28,7 +28,9 @@
     --input: 41 38% 85%;
     --ring: 71 100% 25%;
     --radius: 0.5rem;
+    
   }
+  
 }
 
 @layer base {
@@ -43,6 +45,7 @@
     font-family: 'Playfair Display', Georgia, serif;
     @apply font-semibold tracking-tight;
   }
+  
 }
 
 /* Explicit Color Utilities to fix visibility issues */
@@ -103,5 +106,13 @@
   /* Container */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .bg-dark-olive { background-color: #556B2F; } 
+  .text-dark-olive { color: #556B2F; }
+}
+@layer base {
+  /* ... existing code ... */
+  html, body {
+    overflow-x: hidden; /* Prevents horizontal scrolling */
   }
 }

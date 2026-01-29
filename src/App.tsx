@@ -7,11 +7,14 @@ import { CartProvider } from "@/contexts/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
-import ScrollToTop from "@/components/ScrollToTop"; // 👈 IMPORT THIS
+import ScrollToTop from "@/components/ScrollToTop"; 
+
 import Index from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
+import UserProfile from './pages/UserProfile';
+import Contact from './pages/Contact'; // Imported Contact Page
 
 const queryClient = new QueryClient();
 
@@ -22,7 +25,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          {/* 👇 ADD THIS COMPONENT HERE */}
+          {/* ScrollToTop ensures page starts at top on navigation */}
           <ScrollToTop />
           
           <div className="min-h-screen flex flex-col">
@@ -33,17 +36,25 @@ const App = () => (
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:category" element={<Shop />} />
                 <Route path="/product/:slug" element={<ProductDetail />} />
-                {/* Placeholder routes */}
+                
+                {/* --- Main Functional Routes --- */}
+                <Route path="/profile" element={<UserProfile />} />
+                
+                {/* THIS IS THE KEY FIX: Linking /contact to the Contact page */}
+                <Route path="/contact" element={<Contact />} />
+
+                {/* --- Placeholder / Information Routes --- */}
+                {/* Note: Removed duplicate /contact route that pointed to Index */}
+                <Route path="/about" element={<Index />} />
+                <Route path="/shipping" element={<Index />} />
+                <Route path="/returns" element={<Index />} />
+                <Route path="/faqs" element={<Index />} />
                 <Route path="/quiz" element={<Index />} />
                 <Route path="/learn" element={<Index />} />
                 <Route path="/gift" element={<Shop />} />
                 <Route path="/checkout" element={<Index />} />
-                <Route path="/about" element={<Index />} />
-                <Route path="/contact" element={<Index />} />
-                <Route path="/shipping" element={<Index />} />
-                <Route path="/returns" element={<Index />} />
-                <Route path="/faqs" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+                {/* 404 Route - Always last */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
